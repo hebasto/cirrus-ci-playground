@@ -1,16 +1,24 @@
-check_python_template: &CHECK_PYTHON_TEMPLATE
-  - where py || set ERRORLEVEL=0
-  - py --list || set ERRORLEVEL=0
-  - where python || set ERRORLEVEL=0
-  - where python3 || set ERRORLEVEL=0
-
 task:
   name: "Windows, VS 2022"
   windows_container:
     image: cirrusci/windowsservercore:visualstudio2022
   check_python_before_script:
-    << : *CHECK_PYTHON_TEMPLATE
+    - where py || set ERRORLEVEL=0
+    - py --list || set ERRORLEVEL=0
+    - where python || set ERRORLEVEL=0
+    - where python3 || set ERRORLEVEL=0
   install_python_script:
     - choco install --yes --no-progress python3
+    - echo %PATH%
+    - refreshenv
+    - echo %PATH%
   check_python_after_script:
-    << : *CHECK_PYTHON_TEMPLATE
+    - where py || set ERRORLEVEL=0
+    - py --list || set ERRORLEVEL=0
+    - where python || set ERRORLEVEL=0
+    - where python3 || set ERRORLEVEL=0
+    - refreshenv
+    - where py || set ERRORLEVEL=0
+    - py --list || set ERRORLEVEL=0
+    - where python || set ERRORLEVEL=0
+    - where python3 || set ERRORLEVEL=0
